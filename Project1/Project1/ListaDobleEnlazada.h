@@ -11,12 +11,11 @@ class ListaDoble
 	class Nodo {
 
 	public:
-		Nodo(Artista *x, string name_)
+		Nodo(string name_)
 		{
 
 			next = 0;
 			before = 0;
-			dato = x;
 			name = name_;
 
 		}
@@ -25,14 +24,14 @@ class ListaDoble
 		Nodo *getBefore() { return before; }
 		void setNext(Nodo *n) { next = n; }
 		void setBefore(Nodo *n) { before = n; }
-		Artista *getDato() { return dato; }
+		Nodo *getDato() { return this; }
 		string getName() { return name; };
 
 
 	private:
 		Nodo *next;
 		Nodo *before;
-		Artista *dato;
+		Nodo *dato;
 		string name;
 
 	};
@@ -53,17 +52,17 @@ public:
 	}
 
 	int getsize() { return size; }
-	void add_first(Artista *dato, string name);
-	void add_last(Artista *dato, string name);
-	void add_at(Artista *dato, string name, int index);
-	Artista *get_element_at(int index);
+	void add_first( string name);
+	void add_last( string name);
+	void add_at( string name, int index);
+	void get_element_at(int index);
 
-	Artista remove_first();
-	Artista remove_last();
-	Artista remove_at(int index);
-	Artista print_front_back();
+	void remove_first();
+	void remove_last();
+	void remove_at(int index);
+	void print_front_back();
 
-	void addOrder(Artista *dato, string name);
+	void addOrder( string name);
 	int ordenAlfabetico(string name);
 
 };
@@ -153,12 +152,12 @@ int ListaDoble::ordenAlfabetico(string name)
 }
 
 
-void ListaDoble::addOrder(Artista *dato, string name)
+void ListaDoble::addOrder( string name)
 {
 
 	if (this->isEmpty()) {
 
-		this->add_first(dato, name);
+		this->add_first( name);
 
 	}
 	else {
@@ -166,12 +165,12 @@ void ListaDoble::addOrder(Artista *dato, string name)
 		if (ordenAlfabetico(name) > ordenAlfabetico(this->last->getName())) {
 
 
-			this->add_last(dato, name);
+			this->add_last( name);
 
 		}
 		else if (ordenAlfabetico(name) < ordenAlfabetico(this->first->getName())) {
 
-			this->add_first(dato, name);
+			this->add_first( name);
 
 		}
 		else {
@@ -182,7 +181,7 @@ void ListaDoble::addOrder(Artista *dato, string name)
 
 				if (this->ordenAlfabetico(temp->getNext()->getName()) >= this->ordenAlfabetico(name)) {
 
-					Nodo *nuevo = new Nodo(dato, name);
+					Nodo *nuevo = new Nodo( name);
 					nuevo->setNext(temp->getNext());
 					nuevo->setBefore(temp);
 					temp->getNext()->setBefore(nuevo);
@@ -204,9 +203,9 @@ void ListaDoble::addOrder(Artista *dato, string name)
 }
 
 
-void ListaDoble::add_first(Artista *dato, string name)
+void ListaDoble::add_first( string name)
 {
-	Nodo *n = new Nodo(dato, name);
+	Nodo *n = new Nodo( name);
 	if (isEmpty())
 	{
 		this->first = n;
@@ -225,15 +224,15 @@ void ListaDoble::add_first(Artista *dato, string name)
 	}
 }
 
-void ListaDoble::add_last(Artista *dato, string name)
+void ListaDoble::add_last( string name)
 {
 	if (isEmpty())
 	{
-		this->add_first(dato, name);
+		this->add_first( name);
 	}
 	else {
 
-		Nodo *n = new Nodo(dato, name);
+		Nodo *n = new Nodo( name);
 		this->last->setNext(n);
 		n->setBefore(this->last);
 		this->last = n;
@@ -244,12 +243,12 @@ void ListaDoble::add_last(Artista *dato, string name)
 }
 
 
-void ListaDoble::add_at(Artista *dato, string name, int index)
+void ListaDoble::add_at( string name, int index)
 {
 	if (index >= 0 && index <= this->size)
 	{
-		if (index == 0) { this->add_first(dato, name); return; }
-		if (index == this->size) { this->add_last(dato, name); return; }
+		if (index == 0) { this->add_first(name); return; }
+		if (index == this->size) { this->add_last( name); return; }
 
 		Nodo *aux = this->first;
 		int x = 0;
@@ -259,7 +258,7 @@ void ListaDoble::add_at(Artista *dato, string name, int index)
 			aux = aux->getNext();
 			x++;
 		}
-		Nodo *n = new Nodo(dato, name);
+		Nodo *n = new Nodo( name);
 		aux->getBefore()->setNext(n);
 		n->setBefore(aux->getBefore());
 		n->setNext(aux);
@@ -273,7 +272,7 @@ void ListaDoble::add_at(Artista *dato, string name, int index)
 //Metodos para remover Nodos
 
 
-Artista ListaDoble::remove_first()
+void ListaDoble::remove_first()
 {
 
 	if (!isEmpty())
@@ -304,7 +303,7 @@ Artista ListaDoble::remove_first()
 
 
 
-Artista ListaDoble::remove_last()
+void ListaDoble::remove_last()
 {
 
 	if (!isEmpty())
@@ -336,7 +335,7 @@ Artista ListaDoble::remove_last()
 
 
 
-Artista ListaDoble::remove_at(int index)
+void ListaDoble::remove_at(int index)
 {
 
 	if (index >= 0 && index <= this->size)
@@ -374,7 +373,7 @@ Artista ListaDoble::remove_at(int index)
 }
 
 
-Artista *ListaDoble::get_element_at(int index)
+void ListaDoble::get_element_at(int index)
 {
 
 	if (index >= 0 && index< size)
@@ -383,7 +382,7 @@ Artista *ListaDoble::get_element_at(int index)
 		int x = 0;
 		while (iterador != 0)
 		{
-			if (index == x) { return iterador->getDato(); }
+			if (index == x) { /*return iterador->getDato();*/ }
 			iterador = iterador->getNext();
 			x++;
 		}
@@ -391,7 +390,7 @@ Artista *ListaDoble::get_element_at(int index)
 
 }
 
-Artista ListaDoble::print_front_back()
+void ListaDoble::print_front_back()
 {
 
 	Nodo *aux = this->first;
